@@ -41,6 +41,6 @@ public class CardinalityTroubleApplication {
 	}
 
 	private boolean isCustomHighCardinalityMeter(Meter.Id id) {
-		return "random".equals(id.getName());
+		return "random".equals(id.getName()) || id.getName().startsWith("random.");
 	}
 }
