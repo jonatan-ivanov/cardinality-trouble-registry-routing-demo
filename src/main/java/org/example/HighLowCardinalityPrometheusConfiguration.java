@@ -46,12 +46,11 @@ public class HighLowCardinalityPrometheusConfiguration {
     }
 
     private boolean isCustomHighCardinalityObservation(Observation.Context context) {
-        return "mcp.tool.call".equals(context.getName())
-            || "metered.mcp.tool.call".equals(context.getName());
+        return "mcp.tool.call".equals(context.getName());
     }
 
     private boolean isCustomHighCardinalityMeter(Meter.Id id) {
         return "mcp.tool.call".equals(id.getName()) || id.getName().startsWith("mcp.tool.call.")
-            || "metered.mcp.tool.call".equals(id.getName()) || id.getName().startsWith("metered.mcp.tool.call.");
+            || "metered.mcp.tool.call".equals(id.getName());
     }
 }
