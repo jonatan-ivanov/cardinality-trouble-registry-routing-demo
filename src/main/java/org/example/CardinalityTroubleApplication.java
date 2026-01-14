@@ -2,13 +2,14 @@ package org.example;
 
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.observation.Observation;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import static io.micrometer.core.instrument.config.MeterFilter.*;
 
 @SpringBootApplication
 public class CardinalityTroubleApplication {
@@ -20,14 +21,14 @@ public class CardinalityTroubleApplication {
 	@Bean
 	PrometheusMeterRegistry lowCardinalityRegistry() {
 		PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-		registry.config().meterFilter(MeterFilter.deny(this::isCustomHighCardinalityMeter));
+		registry.config().meterFilter(forMeters(this::isCustomHighCardinalityMeter, ignoreTags("uuid")));
 		return registry;
 	}
 
 	@Bean
 	PrometheusMeterRegistry highCardinalityRegistry() {
 		PrometheusMeterRegistry registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-		registry.config().meterFilter(MeterFilter.denyUnless(this::isCustomHighCardinalityMeter));
+		registry.config().meterFilter(denyUnless(this::isCustomHighCardinalityMeter));
 		return registry;
 	}
 
